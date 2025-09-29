@@ -81,12 +81,7 @@ public class BankService {
      * Helper: Get account by accountId
      */
     private Account getAccountByAccountId(int accountId) {
-        // You need to implement this method in AccountDAO
-        // Example:
-        // return accountDAO.getAccountByAccountId(accountId);
-        // For now, fallback to getAccountByUserId (if only one account per user)
-        // But ideally, implement getAccountByAccountId in AccountDAO
-        return null; // Replace with actual implementation
+    return accountDAO.getAccountByAccountId(accountId);
     }
 
     /**

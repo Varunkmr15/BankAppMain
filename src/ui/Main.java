@@ -134,6 +134,7 @@ public class Main {
                 }
                 case "5": {
                     model.Account account = new dao.AccountDAO().getAccountByUserId(user.getId());
+                    System.out.println(account);
                     if (account == null) {
                         System.out.println("No account found for user.");
                         break;

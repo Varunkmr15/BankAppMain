@@ -6,6 +6,30 @@ import java.sql.*;
 
 public class AccountDAO {
     /**
+     * Get account by account ID
+     */
+    public Account getAccountByAccountId(int accountId) {
+        Account account = null;
+        String sql = "SELECT * FROM accounts WHERE account_id = ?";
+        try (Connection conn = database.DatabaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, accountId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                account = new Account(
+                    rs.getInt("account_id"),
+                    rs.getInt("user_id"),
+                    rs.getBigDecimal("balance"),
+                    rs.getBoolean("is_frozen"),
+                    rs.getString("account_number")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return account;
+    }
+    /**
      * Get account by user ID
      */
     public Account getAccountByUserId(int userId) {
