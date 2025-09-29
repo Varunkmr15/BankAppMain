@@ -6,9 +6,9 @@ import java.sql.SQLException;
 
 public class DatabaseConfig {
     // JDBC URL, username and password of PostgreSQL server
-    private static final String URL = "jdbc:postgresql://ep-autumn-mud-absyu43h-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require";
-    private static final String USER = "neondb_owner";
-    private static final String PASSWORD = "npg_7PcLtkOHG3lT";
+    private static final String URL = "jdbc:postgresql://db.akogpjqcuukusvriulsq.supabase.co:5432/postgres";
+    private static final String USER = "postgres";
+    private static final String PASSWORD = "anniop@1977";
 
     /**
      * Get a new database connection
