@@ -36,6 +36,12 @@ public class Main {
                     String email = scanner.nextLine();
                     model.User newUser = new model.User(0, username, "", fullName, email, false, false);
                     boolean reg = userService.registerUser(newUser, password);
+                    if (reg) {
+                        // Create account for new user
+                        model.Account account = new model.Account(0, newUser.getId(), java.math.BigDecimal.ZERO, false);
+                        boolean accCreated = new dao.AccountDAO().createAccount(account);
+                        System.out.println(accCreated ? "Account created!" : "Account creation failed.");
+                    }
                     System.out.println(reg ? "Registration successful!" : "Registration failed.");
                     break;
                 case "2":
@@ -94,37 +100,67 @@ public class Main {
                     model.User profile = userService.viewProfile(user.getUsername());
                     System.out.println(profile);
                     break;
-                case "2":
+                case "2": {
+                    model.Account account = new dao.AccountDAO().getAccountByUserId(user.getId());
+                    if (account == null) {
+                        System.out.println("No account found for user.");
+                        break;
+                    }
                     System.out.print("Amount to deposit: ");
                     double dep = Double.parseDouble(scanner.nextLine());
-                    boolean depRes = bankService.deposit(user.getId(), dep);
+                    boolean depRes = bankService.deposit(account.getAccountId(), dep);
                     System.out.println(depRes ? "Deposit successful." : "Deposit failed.");
                     break;
-                case "3":
+                }
+                case "3": {
+                    model.Account account = new dao.AccountDAO().getAccountByUserId(user.getId());
+                    if (account == null) {
+                        System.out.println("No account found for user.");
+                        break;
+                    }
                     System.out.print("Amount to withdraw: ");
                     double wd = Double.parseDouble(scanner.nextLine());
-                    boolean wdRes = bankService.withdraw(user.getId(), wd);
+                    boolean wdRes = bankService.withdraw(account.getAccountId(), wd);
                     System.out.println(wdRes ? "Withdraw successful." : "Withdraw failed.");
                     break;
-                case "4":
+                }
+                case "4": {
+                    model.Account account = new dao.AccountDAO().getAccountByUserId(user.getId());
+                    if (account == null) {
+                        System.out.println("No account found for user.");
+                        break;
+                    }
                     System.out.print("Recipient account ID: ");
                     int toAcc = Integer.parseInt(scanner.nextLine());
                     System.out.print("Amount to transfer: ");
                     double tf = Double.parseDouble(scanner.nextLine());
-                    boolean tfRes = bankService.transfer(user.getId(), toAcc, tf);
+                    boolean tfRes = bankService.transfer(account.getAccountId(), toAcc, tf);
                     System.out.println(tfRes ? "Transfer successful." : "Transfer failed.");
                     break;
-                case "5":
-                    double bal = bankService.getBalance(user.getId());
+                }
+                case "5": {
+                    model.Account account = new dao.AccountDAO().getAccountByUserId(user.getId());
+                    if (account == null) {
+                        System.out.println("No account found for user.");
+                        break;
+                    }
+                    double bal = bankService.getBalance(account.getAccountId());
                     System.out.println("Current Balance: " + bal);
                     break;
-                case "6":
-                    java.util.List<model.Transaction> txs = bankService.getTransactionHistory(user.getId());
+                }
+                case "6": {
+                    model.Account account = new dao.AccountDAO().getAccountByUserId(user.getId());
+                    if (account == null) {
+                        System.out.println("No account found for user.");
+                        break;
+                    }
+                    java.util.List<model.Transaction> txs = bankService.getTransactionHistory(account.getAccountId());
                     System.out.println("--- Transaction History ---");
                     for (model.Transaction tx : txs) {
                         System.out.println(tx);
                     }
                     break;
+                }
                 case "7":
                     System.out.print("New full name: ");
                     String newName = scanner.nextLine();
