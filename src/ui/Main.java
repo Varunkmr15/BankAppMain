@@ -36,17 +36,6 @@ public class Main {
                     String email = scanner.nextLine();
                     model.User newUser = new model.User(0, username, "", fullName, email, false, false);
                     boolean reg = userService.registerUser(newUser, password);
-                    if (reg) {
-                        // Fetch user from DB to get correct ID
-                        model.User createdUser = userService.login(username, password);
-                        if (createdUser != null) {
-                            model.Account account = new model.Account(0, createdUser.getId(), java.math.BigDecimal.ZERO, false);
-                            boolean accCreated = new dao.AccountDAO().createAccount(account);
-                            System.out.println(accCreated ? "Account created!" : "Account creation failed.");
-                        } else {
-                            System.out.println("Could not fetch user after registration.");
-                        }
-                    }
                     System.out.println(reg ? "Registration successful!" : "Registration failed.");
                     break;
                 case "2":
