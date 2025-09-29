@@ -7,23 +7,36 @@ import admin.AdminService;
 import java.util.Scanner;
 
 public class Main {
+    // ANSI color codes for console
+    private static final String RESET = "\u001B[0m";
+    private static final String CYAN = "\u001B[36m";
+    private static final String GREEN = "\u001B[32m";
+    private static final String RED = "\u001B[31m";
+    private static final String YELLOW = "\u001B[33m";
+    private static final String BLUE = "\u001B[34m";
+    private static final String MAGENTA = "\u001B[35m";
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         service.UserService userService = new service.UserService();
         service.BankService bankService = new service.BankService();
         admin.AdminService adminService = new admin.AdminService();
 
-        System.out.println("\n==============================");
-        System.out.println("   Welcome to AMDOCS Bank Console   ");
-        System.out.println("==============================\n");
+        System.out.println();
+        System.out.println(CYAN + "========================================" + RESET);
+        System.out.println(BLUE + "      Welcome to AMDOCS Bank Console     " + RESET);
+        System.out.println(CYAN + "========================================" + RESET);
+        System.out.println();
 
         while (true) {
-            System.out.println("1. Register");
-            System.out.println("2. Login");
-            System.out.println("3. Admin Login");
-            System.out.println("0. Exit");
-            System.out.print("Select option: ");
+            System.out.println(YELLOW + "----------- Main Menu -----------" + RESET);
+            System.out.println(GREEN + "1. Register" + RESET);
+            System.out.println(GREEN + "2. Login" + RESET);
+            System.out.println(GREEN + "3. Admin Login" + RESET);
+            System.out.println(RED + "0. Exit" + RESET);
+            System.out.print(MAGENTA + "Select option: " + RESET);
             String choice = scanner.nextLine();
+            System.out.println(CYAN + "----------------------------------------" + RESET);
             switch (choice) {
                 case "1":
                     System.out.print("Enter username: ");
@@ -36,7 +49,7 @@ public class Main {
                     String email = scanner.nextLine();
                     model.User newUser = new model.User(0, username, "", fullName, email, false, false);
                     boolean reg = userService.registerUser(newUser, password);
-                    System.out.println(reg ? "Registration successful!" : "Registration failed.");
+                    System.out.println(reg ? GREEN + "Registration successful!" + RESET : RED + "Registration failed." + RESET);
                     break;
                 case "2":
                     System.out.print("Username: ");
@@ -45,10 +58,10 @@ public class Main {
                     String pass = scanner.nextLine();
                     model.User loggedIn = userService.login(user, pass);
                     if (loggedIn != null) {
-                        System.out.println("\nWelcome, " + loggedIn.getFullName() + "!");
+                        System.out.println(GREEN + "\nWelcome, " + loggedIn.getFullName() + "!" + RESET);
                         userMenu(scanner, loggedIn, bankService, userService);
                     } else {
-                        System.out.println("Login failed.");
+                        System.out.println(RED + "Login failed." + RESET);
                     }
                     break;
                 case "3":
@@ -58,18 +71,18 @@ public class Main {
                     String adminPass = scanner.nextLine();
                     model.User admin = userService.login(adminUser, adminPass);
                     if (admin != null && admin.isAdmin()) {
-                        System.out.println("\nWelcome Admin!");
+                        System.out.println(GREEN + "\nWelcome Admin!" + RESET);
                         adminMenu(scanner, adminService);
                     } else {
-                        System.out.println("Admin login failed.");
+                        System.out.println(RED + "Admin login failed." + RESET);
                     }
                     break;
                 case "0":
-                    System.out.println("Thank you for using MyBank. Goodbye!");
+                    System.out.println(BLUE + "Thank you for using MyBank. Goodbye!" + RESET);
                     scanner.close();
                     return;
                 default:
-                    System.out.println("Invalid option. Try again.");
+                    System.out.println(RED + "Invalid option. Try again." + RESET);
             }
             System.out.println();
         }
@@ -77,51 +90,52 @@ public class Main {
 
     private static void userMenu(Scanner scanner, model.User user, service.BankService bankService, service.UserService userService) {
         while (true) {
-            System.out.println("\n--- User Menu ---");
-            System.out.println("1. View Profile");
-            System.out.println("2. Deposit");
-            System.out.println("3. Withdraw");
-            System.out.println("4. Transfer");
-            System.out.println("5. Check Balance");
-            System.out.println("6. Transaction History");
-            System.out.println("7. Update Profile");
-            System.out.println("8. Delete Account");
-            System.out.println("0. Logout");
-            System.out.print("Select option: ");
+            System.out.println(YELLOW + "\n----------- User Menu -----------" + RESET);
+            System.out.println(GREEN + "1. View Profile" + RESET);
+            System.out.println(GREEN + "2. Deposit" + RESET);
+            System.out.println(GREEN + "3. Withdraw" + RESET);
+            System.out.println(GREEN + "4. Transfer" + RESET);
+            System.out.println(GREEN + "5. Check Balance" + RESET);
+            System.out.println(GREEN + "6. Transaction History" + RESET);
+            System.out.println(GREEN + "7. Update Profile" + RESET);
+            System.out.println(RED + "8. Delete Account" + RESET);
+            System.out.println(RED + "0. Logout" + RESET);
+            System.out.print(MAGENTA + "Select option: " + RESET);
             String choice = scanner.nextLine();
+            System.out.println(CYAN + "----------------------------------------" + RESET);
             switch (choice) {
                 case "1":
                     model.User profile = userService.viewProfile(user.getUsername());
-                    System.out.println(profile);
+                    System.out.println(BLUE + profile + RESET);
                     break;
                 case "2": {
                     model.Account account = new dao.AccountDAO().getAccountByUserId(user.getId());
                     if (account == null) {
-                        System.out.println("No account found for user.");
+                        System.out.println(RED + "No account found for user." + RESET);
                         break;
                     }
                     System.out.print("Amount to deposit: ");
                     double dep = Double.parseDouble(scanner.nextLine());
                     boolean depRes = bankService.deposit(account.getAccountId(), dep);
-                    System.out.println(depRes ? "Deposit successful." : "Deposit failed.");
+                    System.out.println(depRes ? GREEN + "Deposit successful." + RESET : RED + "Deposit failed." + RESET);
                     break;
                 }
                 case "3": {
                     model.Account account = new dao.AccountDAO().getAccountByUserId(user.getId());
                     if (account == null) {
-                        System.out.println("No account found for user.");
+                        System.out.println(RED + "No account found for user." + RESET);
                         break;
                     }
                     System.out.print("Amount to withdraw: ");
                     double wd = Double.parseDouble(scanner.nextLine());
                     boolean wdRes = bankService.withdraw(account.getAccountId(), wd);
-                    System.out.println(wdRes ? "Withdraw successful." : "Withdraw failed.");
+                    System.out.println(wdRes ? GREEN + "Withdraw successful." + RESET : RED + "Withdraw failed." + RESET);
                     break;
                 }
                 case "4": {
                     model.Account account = new dao.AccountDAO().getAccountByUserId(user.getId());
                     if (account == null) {
-                        System.out.println("No account found for user.");
+                        System.out.println(RED + "No account found for user." + RESET);
                         break;
                     }
                     System.out.print("Recipient account ID: ");
@@ -129,30 +143,30 @@ public class Main {
                     System.out.print("Amount to transfer: ");
                     double tf = Double.parseDouble(scanner.nextLine());
                     boolean tfRes = bankService.transfer(account.getAccountId(), toAcc, tf);
-                    System.out.println(tfRes ? "Transfer successful." : "Transfer failed.");
+                    System.out.println(tfRes ? GREEN + "Transfer successful." + RESET : RED + "Transfer failed." + RESET);
                     break;
                 }
                 case "5": {
                     model.Account account = new dao.AccountDAO().getAccountByUserId(user.getId());
-                    System.out.println(account);
+                    System.out.println(BLUE + account + RESET);
                     if (account == null) {
-                        System.out.println("No account found for user.");
+                        System.out.println(RED + "No account found for user." + RESET);
                         break;
                     }
                     double bal = bankService.getBalance(account.getAccountId());
-                    System.out.println("Current Balance: " + bal);
+                    System.out.println(GREEN + "Current Balance: " + bal + RESET);
                     break;
                 }
                 case "6": {
                     model.Account account = new dao.AccountDAO().getAccountByUserId(user.getId());
                     if (account == null) {
-                        System.out.println("No account found for user.");
+                        System.out.println(RED + "No account found for user." + RESET);
                         break;
                     }
                     java.util.List<model.Transaction> txs = bankService.getTransactionHistory(account.getAccountId());
-                    System.out.println("--- Transaction History ---");
+                    System.out.println(YELLOW + "--- Transaction History ---" + RESET);
                     for (model.Transaction tx : txs) {
-                        System.out.println(tx);
+                        System.out.println(BLUE + tx + RESET);
                     }
                     break;
                 }
@@ -164,45 +178,46 @@ public class Main {
                     user.setFullName(newName);
                     user.setEmail(newEmail);
                     boolean upRes = userService.updateProfile(user);
-                    System.out.println(upRes ? "Profile updated." : "Update failed.");
+                    System.out.println(upRes ? GREEN + "Profile updated." + RESET : RED + "Update failed." + RESET);
                     break;
                 case "8":
                     boolean delRes = userService.deleteAccount(user.getUsername());
-                    System.out.println(delRes ? "Account deleted." : "Delete failed.");
+                    System.out.println(delRes ? GREEN + "Account deleted." + RESET : RED + "Delete failed." + RESET);
                     if (delRes) return;
                     break;
                 case "0":
-                    System.out.println("Logged out.");
+                    System.out.println(BLUE + "Logged out." + RESET);
                     return;
                 default:
-                    System.out.println("Invalid option. Try again.");
+                    System.out.println(RED + "Invalid option. Try again." + RESET);
             }
         }
     }
 
     private static void adminMenu(Scanner scanner, admin.AdminService adminService) {
         while (true) {
-            System.out.println("\n--- Admin Menu ---");
-            System.out.println("1. View All Accounts");
-            System.out.println("2. Search Account");
-            System.out.println("3. Delete/Freeze Account");
-            System.out.println("4. Generate Reports");
-            System.out.println("0. Logout");
-            System.out.print("Select option: ");
+            System.out.println(YELLOW + "\n----------- Admin Menu -----------" + RESET);
+            System.out.println(GREEN + "1. View All Accounts" + RESET);
+            System.out.println(GREEN + "2. Search Account" + RESET);
+            System.out.println(GREEN + "3. Delete/Freeze Account" + RESET);
+            System.out.println(GREEN + "4. Generate Reports" + RESET);
+            System.out.println(RED + "0. Logout" + RESET);
+            System.out.print(MAGENTA + "Select option: " + RESET);
             String choice = scanner.nextLine();
+            System.out.println(CYAN + "----------------------------------------" + RESET);
             switch (choice) {
                 case "1":
                     java.util.List<model.Account> accounts = adminService.viewAllAccounts();
-                    System.out.println("--- All Accounts ---");
+                    System.out.println(YELLOW + "--- All Accounts ---" + RESET);
                     for (model.Account acc : accounts) {
-                        System.out.println(acc);
+                        System.out.println(BLUE + acc + RESET);
                     }
                     break;
                 case "2":
                     System.out.print("Account ID to search: ");
                     int accId = Integer.parseInt(scanner.nextLine());
                     model.Account acc = adminService.searchAccount(accId);
-                    System.out.println(acc != null ? acc : "Account not found.");
+                    System.out.println(acc != null ? BLUE + acc + RESET : RED + "Account not found." + RESET);
                     break;
                 case "3":
                     System.out.print("Account ID: ");
@@ -210,17 +225,17 @@ public class Main {
                     System.out.print("Freeze? (y/n): ");
                     boolean freeze = scanner.nextLine().equalsIgnoreCase("y");
                     boolean res = adminService.deleteOrFreezeAccount(delId, freeze);
-                    System.out.println(res ? (freeze ? "Account frozen." : "Account deleted.") : "Operation failed.");
+                    System.out.println(res ? (freeze ? YELLOW + "Account frozen." + RESET : GREEN + "Account deleted." + RESET) : RED + "Operation failed." + RESET);
                     break;
                 case "4":
                     String report = adminService.generateReports();
-                    System.out.println(report);
+                    System.out.println(BLUE + report + RESET);
                     break;
                 case "0":
-                    System.out.println("Admin logged out.");
+                    System.out.println(BLUE + "Admin logged out." + RESET);
                     return;
                 default:
-                    System.out.println("Invalid option. Try again.");
+                    System.out.println(RED + "Invalid option. Try again." + RESET);
             }
         }
     }
