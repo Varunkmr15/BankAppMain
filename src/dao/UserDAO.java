@@ -31,8 +31,7 @@ public class UserDAO {
                 }
                 // Generate unique account number (e.g., timestamp + userId)
                 String accountNumber = "ACCT" + System.currentTimeMillis() + userId;
-                model.Account account = new model.Account(0, userId, java.math.BigDecimal.ZERO, false);
-                // Optionally add accountNumber field to Account model and table
+                model.Account account = new model.Account(0, userId, java.math.BigDecimal.ZERO, false, accountNumber);
                 new dao.AccountDAO().createAccount(account);
                 return true;
             }
