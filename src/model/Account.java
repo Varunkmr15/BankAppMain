@@ -7,14 +7,27 @@ public class Account {
     private int userId;
     private BigDecimal balance;
     private boolean isFrozen;
+    private String accountNumber;
 
     public Account() {}
 
-    public Account(int accountId, int userId, BigDecimal balance, boolean isFrozen) {
+    public Account(int accountId, int userId, BigDecimal balance, boolean isFrozen, String accountNumber) {
         this.accountId = accountId;
         this.userId = userId;
         this.balance = balance;
         this.isFrozen = isFrozen;
+        this.accountNumber = accountNumber;
+    }
+
+    public Account(int accountId, int userId, BigDecimal balance, boolean isFrozen) {
+        this(accountId, userId, balance, isFrozen, null);
+    }
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
     }
 
     public int getAccountId() {
@@ -56,6 +69,7 @@ public class Account {
                 ", userId=" + userId +
                 ", balance=" + balance +
                 ", isFrozen=" + isFrozen +
+                ", accountNumber='" + accountNumber + '\'' +
                 '}';
     }
 }

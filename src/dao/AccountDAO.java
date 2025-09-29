@@ -20,7 +20,8 @@ public class AccountDAO {
                     rs.getInt("account_id"),
                     rs.getInt("user_id"),
                     rs.getBigDecimal("balance"),
-                    rs.getBoolean("is_frozen")
+                    rs.getBoolean("is_frozen"),
+                    rs.getString("account_number")
                 );
             }
         } catch (SQLException e) {
@@ -50,12 +51,13 @@ public class AccountDAO {
      * Create a new account
      */
     public boolean createAccount(Account account) {
-        String sql = "INSERT INTO accounts (user_id, balance, is_frozen) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO accounts (user_id, balance, is_frozen, account_number) VALUES (?, ?, ?, ?)";
         try (Connection conn = database.DatabaseConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, account.getUserId());
             stmt.setBigDecimal(2, account.getBalance());
             stmt.setBoolean(3, account.isFrozen());
+            stmt.setString(4, account.getAccountNumber());
             int rows = stmt.executeUpdate();
             return rows > 0;
         } catch (SQLException e) {

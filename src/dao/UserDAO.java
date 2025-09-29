@@ -11,7 +11,7 @@ public class UserDAO {
     public boolean createUser(model.User user) {
         String sql = "INSERT INTO users (username, password_hash, full_name, email, is_admin, is_frozen) VALUES (?, ?, ?, ?, ?, ?)";
         try (java.sql.Connection conn = database.DatabaseConfig.getConnection();
-             java.sql.PreparedStatement stmt = conn.prepareStatement(sql)) {
+             java.sql.PreparedStatement stmt = conn.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, user.getUsername());
             stmt.setString(2, user.getPasswordHash());
             stmt.setString(3, user.getFullName());
@@ -19,7 +19,24 @@ public class UserDAO {
             stmt.setBoolean(5, user.isAdmin());
             stmt.setBoolean(6, user.isFrozen());
             int rows = stmt.executeUpdate();
-            return rows > 0;
+            if (rows > 0) {
+                java.sql.ResultSet rs = stmt.getGeneratedKeys();
+                int userId = 0;
+                if (rs.next()) {
+                    userId = rs.getInt(1);
+                } else {
+                    // fallback: fetch user by username
+                    model.User createdUser = getUserByUsername(user.getUsername());
+                    if (createdUser != null) userId = createdUser.getId();
+                }
+                // Generate unique account number (e.g., timestamp + userId)
+                String accountNumber = "ACCT" + System.currentTimeMillis() + userId;
+                model.Account account = new model.Account(0, userId, java.math.BigDecimal.ZERO, false);
+                // Optionally add accountNumber field to Account model and table
+                new dao.AccountDAO().createAccount(account);
+                return true;
+            }
+            return false;
         } catch (java.sql.SQLException e) {
             e.printStackTrace();
             return false;
