@@ -15,7 +15,6 @@ public class Main {
     public static void main(String[] args) {
     Scanner scanner = new Scanner(System.in);
     java.io.Console console = System.console();
-        // Removed JLine integration
         service.UserService userService = new service.UserService();
         service.BankService bankService = new service.BankService();
         admin.AdminService adminService = new admin.AdminService();
@@ -44,15 +43,19 @@ public class Main {
                         if (username.matches("^[a-zA-Z0-9]{4,16}$")) break;
                         System.out.println(RED + "Invalid username. Try again." + RESET);
                     }
-                        String password;
-                            if (console != null) {
-                                System.out.print("Enter password (min 8 chars): ");
-                                char[] pwdArr = console.readPassword();
-                                password = new String(pwdArr);
-                            } else {
-                                System.out.print("Enter password (min 8 chars, input visible): ");
-                                password = scanner.nextLine();
-                            }
+                    String password;
+                    while (true) {
+                        if (console != null) {
+                            System.out.print("Enter password (min 8 chars): ");
+                            char[] pwdArr = console.readPassword();
+                            password = new String(pwdArr);
+                        } else {
+                            System.out.print("Enter password (min 8 chars, input visible): ");
+                            password = scanner.nextLine();
+                        }
+                        if (password.length() >= 8) break;
+                        System.out.println(RED + "Password must be at least 8 characters." + RESET);
+                    }
                     String phoneNumber;
                     while (true) {
                         System.out.print("Phone number (10 digits): ");
@@ -84,15 +87,15 @@ public class Main {
                 case "2":
                     System.out.print("Username: ");
                     String user = scanner.nextLine();
-                        String pass;
-                            if (console != null) {
-                                System.out.print("Password: ");
-                                char[] pwdArr = console.readPassword();
-                                pass = new String(pwdArr);
-                            } else {
-                                System.out.print("Password (input will be visible): ");
-                                pass = scanner.nextLine();
-                            }
+                    String pass;
+                    if (console != null) {
+                        System.out.print("Password: ");
+                        char[] pwdArr = console.readPassword();
+                        pass = new String(pwdArr);
+                    } else {
+                        System.out.print("Password (input will be visible): ");
+                        pass = scanner.nextLine();
+                    }
                     model.User loggedIn = userService.login(user, pass);
                     if (loggedIn != null) {
                         System.out.println(GREEN + "\nWelcome, " + loggedIn.getFullName() + "!" + RESET);
@@ -104,15 +107,15 @@ public class Main {
                 case "3":
                     System.out.print("Admin username: ");
                     String adminUser = scanner.nextLine();
-                        String adminPass;
-                            if (console != null) {
-                                System.out.print("Password: ");
-                                char[] pwdArr = console.readPassword();
-                                adminPass = new String(pwdArr);
-                            } else {
-                                System.out.print("Password (input will be visible): ");
-                                adminPass = scanner.nextLine();
-                            }
+                    String adminPass;
+                    if (console != null) {
+                        System.out.print("Password: ");
+                        char[] pwdArr = console.readPassword();
+                        adminPass = new String(pwdArr);
+                    } else {
+                        System.out.print("Password (input will be visible): ");
+                        adminPass = scanner.nextLine();
+                    }
                     model.User admin = userService.login(adminUser, adminPass);
                     if (admin != null && admin.isAdmin()) {
                         System.out.println(GREEN + "\nWelcome Admin!" + RESET);
