@@ -6,19 +6,28 @@ public class User {
     private String passwordHash;
     private String fullName;
     private String email;
+    private String phoneNumber;
     private boolean isAdmin;
     private boolean isFrozen;
 
     public User() {}
 
-    public User(int id, String username, String passwordHash, String fullName, String email, boolean isAdmin, boolean isFrozen) {
+    public User(int id, String username, String passwordHash, String fullName, String email, String phoneNumber, boolean isAdmin, boolean isFrozen) {
         this.id = id;
         this.username = username;
         this.passwordHash = passwordHash;
         this.fullName = fullName;
         this.email = email;
+        this.phoneNumber = phoneNumber;
         this.isAdmin = isAdmin;
         this.isFrozen = isFrozen;
+    }
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public int getId() {
@@ -84,6 +93,7 @@ public class User {
                 ", username='" + username + '\'' +
                 ", fullName='" + fullName + '\'' +
                 ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
                 ", isAdmin=" + isAdmin +
                 ", isFrozen=" + isFrozen +
                 '}';

@@ -39,26 +39,43 @@ public class Main {
             String choice = scanner.nextLine();
             System.out.println(CYAN + "----------------------------------------" + RESET);
             switch (choice) {
-                case "1":
-                    System.out.print("Enter username: ");
-                    String username = scanner.nextLine();
+                case "1": {
+                    String username;
+                    while (true) {
+                        System.out.print("Enter username (alphanumeric, 4-16 chars): ");
+                        username = scanner.nextLine();
+                        if (username.matches("^[a-zA-Z0-9]{4,16}$")) break;
+                        System.out.println(RED + "Invalid username. Try again." + RESET);
+                    }
                     String password;
-                    if (console != null) {
-                        System.out.print("Enter password: ");
-                        char[] pwdArr = console.readPassword();
-                        password = new String(pwdArr);
-                    } else {
-                        System.out.print("Enter password (input will be visible): ");
-                        password = scanner.nextLine();
+                    while (true) {
+                        if (console != null) {
+                            System.out.print("Enter password (min 8 chars): ");
+                            char[] pwdArr = console.readPassword();
+                            password = new String(pwdArr);
+                        } else {
+                            System.out.print("Enter password (min 8 chars, input visible): ");
+                            password = scanner.nextLine();
+                        }
+                        if (password.length() >= 8) break;
+                        System.out.println(RED + "Password must be at least 8 characters." + RESET);
+                    }
+                    String phoneNumber;
+                    while (true) {
+                        System.out.print("Phone number (10 digits): ");
+                        phoneNumber = scanner.nextLine();
+                        if (phoneNumber.matches("^[0-9]{10}$")) break;
+                        System.out.println(RED + "Invalid phone number. Try again." + RESET);
                     }
                     System.out.print("Full name: ");
                     String fullName = scanner.nextLine();
                     System.out.print("Email: ");
                     String email = scanner.nextLine();
-                    model.User newUser = new model.User(0, username, "", fullName, email, false, false);
+                    model.User newUser = new model.User(0, username, "", fullName, email, phoneNumber, false, false);
                     boolean reg = userService.registerUser(newUser, password);
                     System.out.println(reg ? GREEN + "Registration successful!" + RESET : RED + "Registration failed." + RESET);
                     break;
+                }
                 case "2":
                     System.out.print("Username: ");
                     String user = scanner.nextLine();
