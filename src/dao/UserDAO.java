@@ -9,17 +9,18 @@ public class UserDAO {
      * Create a new user
      */
     public boolean createUser(model.User user) {
-        String sql = "INSERT INTO users (username, password_hash, full_name, email, phone_number, is_admin, is_frozen) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        try (java.sql.Connection conn = database.DatabaseConfig.getConnection();
-             java.sql.PreparedStatement stmt = conn.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setString(1, user.getUsername());
-            stmt.setString(2, user.getPasswordHash());
-            stmt.setString(3, user.getFullName());
-            stmt.setString(4, user.getEmail());
-            stmt.setString(5, user.getPhoneNumber());
-            stmt.setBoolean(6, user.isAdmin());
-            stmt.setBoolean(7, user.isFrozen());
-            int rows = stmt.executeUpdate();
+       String sql = "INSERT INTO users (username, password_hash, full_name, email, phone_number, aadhaar_number, is_admin, is_frozen) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+       try (java.sql.Connection conn = database.DatabaseConfig.getConnection();
+           java.sql.PreparedStatement stmt = conn.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS)) {
+          stmt.setString(1, user.getUsername());
+          stmt.setString(2, user.getPasswordHash());
+          stmt.setString(3, user.getFullName());
+          stmt.setString(4, user.getEmail());
+          stmt.setString(5, user.getPhoneNumber());
+          stmt.setString(6, user.getAadhaarNumber());
+          stmt.setBoolean(7, user.isAdmin());
+          stmt.setBoolean(8, user.isFrozen());
+          int rows = stmt.executeUpdate();
             if (rows > 0) {
                 java.sql.ResultSet rs = stmt.getGeneratedKeys();
                 int userId = 0;
@@ -61,6 +62,7 @@ public class UserDAO {
                     rs.getString("full_name"),
                     rs.getString("email"),
                     rs.getString("phone_number"),
+                    rs.getString("aadhaar_number"),
                     rs.getBoolean("is_admin"),
                     rs.getBoolean("is_frozen")
                 );
@@ -75,15 +77,16 @@ public class UserDAO {
      * Update user profile
      */
     public boolean updateUser(model.User user) {
-       String sql = "UPDATE users SET full_name = ?, email = ?, phone_number = ?, is_admin = ?, is_frozen = ? WHERE username = ?";
+       String sql = "UPDATE users SET full_name = ?, email = ?, phone_number = ?, aadhaar_number = ?, is_admin = ?, is_frozen = ? WHERE username = ?";
        try (java.sql.Connection conn = database.DatabaseConfig.getConnection();
            java.sql.PreparedStatement stmt = conn.prepareStatement(sql)) {
           stmt.setString(1, user.getFullName());
           stmt.setString(2, user.getEmail());
           stmt.setString(3, user.getPhoneNumber());
-          stmt.setBoolean(4, user.isAdmin());
-          stmt.setBoolean(5, user.isFrozen());
-          stmt.setString(6, user.getUsername());
+          stmt.setString(4, user.getAadhaarNumber());
+          stmt.setBoolean(5, user.isAdmin());
+          stmt.setBoolean(6, user.isFrozen());
+          stmt.setString(7, user.getUsername());
           int rows = stmt.executeUpdate();
             return rows > 0;
         } catch (java.sql.SQLException e) {

@@ -67,11 +67,23 @@ public class Main {
                         if (phoneNumber.matches("^[0-9]{10}$")) break;
                         System.out.println(RED + "Invalid phone number. Try again." + RESET);
                     }
+                    String aadhaarNumber;
+                    while (true) {
+                        System.out.print("Aadhaar number (12 digits): ");
+                        aadhaarNumber = scanner.nextLine();
+                        if (aadhaarNumber.matches("^[0-9]{12}$")) break;
+                        System.out.println(RED + "Invalid Aadhaar number. Try again." + RESET);
+                    }
                     System.out.print("Full name: ");
                     String fullName = scanner.nextLine();
-                    System.out.print("Email: ");
-                    String email = scanner.nextLine();
-                    model.User newUser = new model.User(0, username, "", fullName, email, phoneNumber, false, false);
+                    String email;
+                    while (true) {
+                        System.out.print("Email: ");
+                        email = scanner.nextLine();
+                        if (email.contains("@")) break;
+                        System.out.println(RED + "Email must contain '@'. Try again." + RESET);
+                    }
+                    model.User newUser = new model.User(0, username, "", fullName, email, phoneNumber, aadhaarNumber, false, false);
                     boolean reg = userService.registerUser(newUser, password);
                     System.out.println(reg ? GREEN + "Registration successful!" + RESET : RED + "Registration failed." + RESET);
                     break;

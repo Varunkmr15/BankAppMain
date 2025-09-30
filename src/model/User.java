@@ -7,20 +7,29 @@ public class User {
     private String fullName;
     private String email;
     private String phoneNumber;
+    private String aadhaarNumber;
     private boolean isAdmin;
     private boolean isFrozen;
 
     public User() {}
 
-    public User(int id, String username, String passwordHash, String fullName, String email, String phoneNumber, boolean isAdmin, boolean isFrozen) {
+    public User(int id, String username, String passwordHash, String fullName, String email, String phoneNumber, String aadhaarNumber, boolean isAdmin, boolean isFrozen) {
         this.id = id;
         this.username = username;
         this.passwordHash = passwordHash;
         this.fullName = fullName;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.aadhaarNumber = aadhaarNumber;
         this.isAdmin = isAdmin;
         this.isFrozen = isFrozen;
+    }
+    public String getAadhaarNumber() {
+        return aadhaarNumber;
+    }
+
+    public void setAadhaarNumber(String aadhaarNumber) {
+        this.aadhaarNumber = aadhaarNumber;
     }
     public String getPhoneNumber() {
         return phoneNumber;
@@ -94,6 +103,7 @@ public class User {
                 ", fullName='" + fullName + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
+                ", aadhaarNumber='" + aadhaarNumber + '\'' +
                 ", isAdmin=" + isAdmin +
                 ", isFrozen=" + isFrozen +
                 '}';
