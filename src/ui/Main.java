@@ -15,7 +15,7 @@ public class Main {
     public static void main(String[] args) {
     Scanner scanner = new Scanner(System.in);
     java.io.Console console = System.console();
-        org.jline.reader.LineReader reader = org.jline.reader.LineReaderBuilder.builder().build();
+        // Removed JLine integration
         service.UserService userService = new service.UserService();
         service.BankService bankService = new service.BankService();
         admin.AdminService adminService = new admin.AdminService();
@@ -45,9 +45,6 @@ public class Main {
                         System.out.println(RED + "Invalid username. Try again." + RESET);
                     }
                         String password;
-                        try {
-                            password = reader.readLine("Enter password (min 8 chars): ", '*');
-                        } catch (Exception e) {
                             if (console != null) {
                                 System.out.print("Enter password (min 8 chars): ");
                                 char[] pwdArr = console.readPassword();
@@ -56,7 +53,6 @@ public class Main {
                                 System.out.print("Enter password (min 8 chars, input visible): ");
                                 password = scanner.nextLine();
                             }
-                        }
                     String phoneNumber;
                     while (true) {
                         System.out.print("Phone number (10 digits): ");
@@ -89,9 +85,6 @@ public class Main {
                     System.out.print("Username: ");
                     String user = scanner.nextLine();
                         String pass;
-                        try {
-                            pass = reader.readLine("Password: ", '*');
-                        } catch (Exception e) {
                             if (console != null) {
                                 System.out.print("Password: ");
                                 char[] pwdArr = console.readPassword();
@@ -100,7 +93,6 @@ public class Main {
                                 System.out.print("Password (input will be visible): ");
                                 pass = scanner.nextLine();
                             }
-                        }
                     model.User loggedIn = userService.login(user, pass);
                     if (loggedIn != null) {
                         System.out.println(GREEN + "\nWelcome, " + loggedIn.getFullName() + "!" + RESET);
@@ -113,9 +105,6 @@ public class Main {
                     System.out.print("Admin username: ");
                     String adminUser = scanner.nextLine();
                         String adminPass;
-                        try {
-                            adminPass = reader.readLine("Password: ", '*');
-                        } catch (Exception e) {
                             if (console != null) {
                                 System.out.print("Password: ");
                                 char[] pwdArr = console.readPassword();
@@ -124,7 +113,6 @@ public class Main {
                                 System.out.print("Password (input will be visible): ");
                                 adminPass = scanner.nextLine();
                             }
-                        }
                     model.User admin = userService.login(adminUser, adminPass);
                     if (admin != null && admin.isAdmin()) {
                         System.out.println(GREEN + "\nWelcome Admin!" + RESET);
