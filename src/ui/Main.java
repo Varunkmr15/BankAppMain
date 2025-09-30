@@ -295,7 +295,8 @@ public class Main {
             System.out.println(GREEN + "1. View All Accounts" + RESET);
             System.out.println(GREEN + "2. Search Account" + RESET);
             System.out.println(GREEN + "3. Delete/Freeze Account" + RESET);
-            System.out.println(GREEN + "4. Generate Reports" + RESET);
+            System.out.println(GREEN + "4. Unfreeze Account" + RESET);
+            System.out.println(GREEN + "5. Generate Reports" + RESET);
             System.out.println(RED + "0. Logout" + RESET);
             System.out.print(MAGENTA + "Select option: " + RESET);
             String choice = scanner.nextLine();
@@ -323,6 +324,12 @@ public class Main {
                     System.out.println(res ? (freeze ? YELLOW + "Account frozen." + RESET : GREEN + "Account deleted." + RESET) : RED + "Operation failed." + RESET);
                     break;
                 case "4":
+                    System.out.print("Account ID to unfreeze: ");
+                    int unfreezeId = Integer.parseInt(scanner.nextLine());
+                    boolean unfrozen = adminService.unfreezeAccount(unfreezeId);
+                    System.out.println(unfrozen ? GREEN + "Account unfrozen." + RESET : RED + "Operation failed." + RESET);
+                    break;
+                case "5":
                     String report = adminService.generateReports();
                     System.out.println(BLUE + report + RESET);
                     break;

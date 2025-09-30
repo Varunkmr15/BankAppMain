@@ -23,7 +23,8 @@ public class AdminService {
                     rs.getInt("account_id"),
                     rs.getInt("user_id"),
                     rs.getBigDecimal("balance"),
-                    rs.getBoolean("is_frozen")
+                    rs.getBoolean("is_frozen"),
+                    rs.getString("account_number")
                 );
                 accounts.add(account);
             }
@@ -31,6 +32,12 @@ public class AdminService {
             e.printStackTrace();
         }
         return accounts;
+    }
+    /**
+     * Unfreeze account
+     */
+    public boolean unfreezeAccount(int accountId) {
+        return accountDAO.setAccountFrozen(accountId, false);
     }
 
     /**
