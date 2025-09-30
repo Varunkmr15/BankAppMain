@@ -104,5 +104,4 @@ public class UserDAO {
             return false;
         }
     }
-    // ...existing code...
 }

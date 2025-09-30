@@ -122,5 +122,4 @@ public class AccountDAO {
             return false;
         }
     }
-    // ...existing code...
 }

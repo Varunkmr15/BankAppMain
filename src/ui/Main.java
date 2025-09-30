@@ -17,7 +17,8 @@ public class Main {
     private static final String MAGENTA = "\u001B[35m";
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+    Scanner scanner = new Scanner(System.in);
+    java.io.Console console = System.console();
         service.UserService userService = new service.UserService();
         service.BankService bankService = new service.BankService();
         admin.AdminService adminService = new admin.AdminService();
@@ -41,8 +42,15 @@ public class Main {
                 case "1":
                     System.out.print("Enter username: ");
                     String username = scanner.nextLine();
-                    System.out.print("Enter password: ");
-                    String password = scanner.nextLine();
+                    String password;
+                    if (console != null) {
+                        System.out.print("Enter password: ");
+                        char[] pwdArr = console.readPassword();
+                        password = new String(pwdArr);
+                    } else {
+                        System.out.print("Enter password (input will be visible): ");
+                        password = scanner.nextLine();
+                    }
                     System.out.print("Full name: ");
                     String fullName = scanner.nextLine();
                     System.out.print("Email: ");
@@ -54,8 +62,15 @@ public class Main {
                 case "2":
                     System.out.print("Username: ");
                     String user = scanner.nextLine();
-                    System.out.print("Password: ");
-                    String pass = scanner.nextLine();
+                    String pass;
+                    if (console != null) {
+                        System.out.print("Password: ");
+                        char[] pwdArr = console.readPassword();
+                        pass = new String(pwdArr);
+                    } else {
+                        System.out.print("Password (input will be visible): ");
+                        pass = scanner.nextLine();
+                    }
                     model.User loggedIn = userService.login(user, pass);
                     if (loggedIn != null) {
                         System.out.println(GREEN + "\nWelcome, " + loggedIn.getFullName() + "!" + RESET);
@@ -67,8 +82,15 @@ public class Main {
                 case "3":
                     System.out.print("Admin username: ");
                     String adminUser = scanner.nextLine();
-                    System.out.print("Password: ");
-                    String adminPass = scanner.nextLine();
+                    String adminPass;
+                    if (console != null) {
+                        System.out.print("Password: ");
+                        char[] pwdArr = console.readPassword();
+                        adminPass = new String(pwdArr);
+                    } else {
+                        System.out.print("Password (input will be visible): ");
+                        adminPass = scanner.nextLine();
+                    }
                     model.User admin = userService.login(adminUser, adminPass);
                     if (admin != null && admin.isAdmin()) {
                         System.out.println(GREEN + "\nWelcome Admin!" + RESET);

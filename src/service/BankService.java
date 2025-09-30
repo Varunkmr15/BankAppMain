@@ -90,5 +90,4 @@ public class BankService {
     public java.util.List<model.Transaction> getTransactionHistory(int accountId) {
         return transactionDAO.getTransactionsByAccountId(accountId);
     }
-    // ...existing code...
 }
