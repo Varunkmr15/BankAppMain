@@ -221,16 +221,64 @@ public class Main {
                     }
                     break;
                 }
-                case "7":
+                case "7": {
+                    String newUsername;
+                    while (true) {
+                        System.out.print("New username (alphanumeric, 4-16 chars): ");
+                        newUsername = scanner.nextLine();
+                        if (newUsername.matches("^[a-zA-Z0-9]{4,16}$")) break;
+                        System.out.println(RED + "Invalid username. Try again." + RESET);
+                    }
+                    String newPassword;
+                    java.io.Console console = System.console();
+                    while (true) {
+                        if (console != null) {
+                            System.out.print("New password (min 8 chars): ");
+                            char[] pwdArr = console.readPassword();
+                            newPassword = new String(pwdArr);
+                        } else {
+                            System.out.print("New password (min 8 chars, input visible): ");
+                            newPassword = scanner.nextLine();
+                        }
+                        if (newPassword.length() >= 8) break;
+                        System.out.println(RED + "Password must be at least 8 characters." + RESET);
+                    }
+                    String newPhoneNumber;
+                    while (true) {
+                        System.out.print("New phone number (10 digits): ");
+                        newPhoneNumber = scanner.nextLine();
+                        if (newPhoneNumber.matches("^[0-9]{10}$")) break;
+                        System.out.println(RED + "Invalid phone number. Try again." + RESET);
+                    }
+                    String newAadhaarNumber;
+                    while (true) {
+                        System.out.print("New Aadhaar number (12 digits): ");
+                        newAadhaarNumber = scanner.nextLine();
+                        if (newAadhaarNumber.matches("^[0-9]{12}$")) break;
+                        System.out.println(RED + "Invalid Aadhaar number. Try again." + RESET);
+                    }
                     System.out.print("New full name: ");
                     String newName = scanner.nextLine();
-                    System.out.print("New email: ");
-                    String newEmail = scanner.nextLine();
+                    String newEmail;
+                    while (true) {
+                        System.out.print("New email: ");
+                        newEmail = scanner.nextLine();
+                        if (newEmail.contains("@")) break;
+                        System.out.println(RED + "Email must contain '@'. Try again." + RESET);
+                    }
+                    user.setUsername(newUsername);
                     user.setFullName(newName);
                     user.setEmail(newEmail);
+                    user.setPhoneNumber(newPhoneNumber);
+                    user.setAadhaarNumber(newAadhaarNumber);
+                    // Update password hash
+                    String salt = auth.PasswordUtils.generateSalt();
+                    String hash = auth.PasswordUtils.hashPassword(newPassword, salt);
+                    user.setPasswordHash(hash + ":" + salt);
                     boolean upRes = userService.updateProfile(user);
                     System.out.println(upRes ? GREEN + "Profile updated." + RESET : RED + "Update failed." + RESET);
                     break;
+                }
                 case "8":
                     boolean delRes = userService.deleteAccount(user.getUsername());
                     System.out.println(delRes ? GREEN + "Account deleted." + RESET : RED + "Delete failed." + RESET);
