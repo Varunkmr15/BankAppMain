@@ -1,9 +1,5 @@
 package ui;
 
-import service.UserService;
-import service.BankService;
-import admin.AdminService;
-
 import java.util.Scanner;
 
 public class Main {
@@ -29,7 +25,7 @@ public class Main {
         System.out.println(CYAN + "========================================" + RESET);
         System.out.println();
 
-        while (true) {
+        while (true)  {
             System.out.println(YELLOW + "----------- Main Menu -----------" + RESET);
             System.out.println(GREEN + "1. Register" + RESET);
             System.out.println(GREEN + "2. Login" + RESET);

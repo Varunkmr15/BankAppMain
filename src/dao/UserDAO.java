@@ -77,17 +77,19 @@ public class UserDAO {
      * Update user profile
      */
     public boolean updateUser(model.User user) {
-       String sql = "UPDATE users SET full_name = ?, email = ?, phone_number = ?, aadhaar_number = ?, is_admin = ?, is_frozen = ? WHERE username = ?";
-       try (java.sql.Connection conn = database.DatabaseConfig.getConnection();
-           java.sql.PreparedStatement stmt = conn.prepareStatement(sql)) {
-          stmt.setString(1, user.getFullName());
-          stmt.setString(2, user.getEmail());
-          stmt.setString(3, user.getPhoneNumber());
-          stmt.setString(4, user.getAadhaarNumber());
-          stmt.setBoolean(5, user.isAdmin());
-          stmt.setBoolean(6, user.isFrozen());
-          stmt.setString(7, user.getUsername());
-          int rows = stmt.executeUpdate();
+        String sql = "UPDATE users SET username = ?, password_hash = ?, full_name = ?, email = ?, phone_number = ?, aadhaar_number = ?, is_admin = ?, is_frozen = ? WHERE id = ?";
+        try (java.sql.Connection conn = database.DatabaseConfig.getConnection();
+             java.sql.PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, user.getUsername());
+            stmt.setString(2, user.getPasswordHash());
+            stmt.setString(3, user.getFullName());
+            stmt.setString(4, user.getEmail());
+            stmt.setString(5, user.getPhoneNumber());
+            stmt.setString(6, user.getAadhaarNumber());
+            stmt.setBoolean(7, user.isAdmin());
+            stmt.setBoolean(8, user.isFrozen());
+            stmt.setInt(9, user.getId());
+            int rows = stmt.executeUpdate();
             return rows > 0;
         } catch (java.sql.SQLException e) {
             e.printStackTrace();
